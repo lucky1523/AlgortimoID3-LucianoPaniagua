@@ -6,11 +6,6 @@ matplotlib.rcParams['font.sans-serif'] = [u'SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
 
 def calcShannonEnt(dataSet):
-    """
-    Calcular la entropía de Shannon de un conjunto de datos dado
-         : param dataSet: el conjunto de datos dado
-         : return: devuelve la entropía de Shannon
-    """
     numEntries = len(dataSet)
     labelCounts ={}
     for featVec in dataSet:
@@ -25,7 +20,6 @@ def calcShannonEnt(dataSet):
     return shannonEnt
 
 def splitDataSet(dataSet,axis,value):
-    "" "División de conjuntos de datos según características determinadas" ""
     retDataSet = []  # Crea un nuevo objeto de lista como los datos devueltos
     for featVec in dataSet:
         if featVec[axis]==value:
@@ -35,7 +29,6 @@ def splitDataSet(dataSet,axis,value):
     return retDataSet
 
 def chooseBestFeatureToSplit(dataSet):
-    "" "Elija la mejor forma de dividir el conjunto de datos" ""
     numFeatures = len(dataSet[0])-1
     baseEntropy = calcShannonEnt(dataSet)
     bestInfoGain = 0.0
@@ -59,7 +52,6 @@ def chooseBestFeatureToSplit(dataSet):
     return bestFeature
 
 def majorityCnt(classList):
-    "" "Obtenga el nombre de la categoría con el mejor número de apariciones" ""
     classCount = {}
     for vote in classList:
         if vote not in classCount.keys():
@@ -69,7 +61,6 @@ def majorityCnt(classList):
     return sortedClassCount[0][0]
 
 def createTree(dataSet,labels):
-    "" "Crear árbol" ""
     classList = [example[-1] for example in dataSet]
     # Si las categorías son exactamente iguales, deje de seguir dividiendo
     if classList.count(classList[0]) == len(classList):
@@ -90,11 +81,9 @@ def createTree(dataSet,labels):
 
 # Use anotaciones de texto para dibujar nodos de árbol
 def plotNode(nodeTxt,centerPt,parentPt,nodeType):
-    "" "Dibuja un nodo con flechas" ""
     createPlot.ax1.annotate(nodeTxt,xy=parentPt,xycoords='axes fraction',xytext= centerPt,textcoords='axes fraction',va='center',ha='center',bbox=nodeType,arrowprops=arrow_args)
 
 def createPlot():
-    "" "Dibujar nodos de árbol" ""
     fig = plt.figure(1,facecolor='white')
     fig.clf()
     createPlot.ax1 = plt.subplot(111,frameon=False)
@@ -103,7 +92,6 @@ def createPlot():
     plt.show()
 
 def getNumLeafs(myTree):
-    "" "Obtener el número de nodos hoja" ""
     numLeafs = 0
     firstStr = list(myTree.keys())[0]
     secondDict = myTree[firstStr]
@@ -115,7 +103,6 @@ def getNumLeafs(myTree):
     return numLeafs
 
 def getTreeDepth(myTree):
-    "" "Obtener el número de niveles del árbol" ""
     maxDepth = 0
     firstStr =list(myTree.keys())[0]
     secondDict = myTree[firstStr]
@@ -129,13 +116,11 @@ def getTreeDepth(myTree):
     return maxDepth
 
 def plotMidText(cntPt,parentPt,txtString):
-    "" "Complete la información de texto entre los nodos principal y secundario" ""
     xMid = (parentPt[0]-cntPt[0])/2+cntPt[0]
     yMid = (parentPt[1]-cntPt[1])/2+cntPt[1]
     createPlot.ax1.text(xMid,yMid,txtString)
 
 def plotTree(myTree,parentPt,nodeTxt):
-    "" "Dibuja un diagrama de árbol" ""
     numLeafs = getNumLeafs(myTree)
     depth = getTreeDepth(myTree)
     firstStr = list(myTree.keys())[0]
@@ -154,7 +139,6 @@ def plotTree(myTree,parentPt,nodeTxt):
     plotTree.yOff = plotTree.yOff + 1 / plotTree.totalD
 
 def createPlot(inTree):
-    "" "Crear área de dibujo" ""
     fig = plt.figure(1,facecolor='white')
     fig.clf()
     axprops = dict(xticks=[],yticks=[])
@@ -167,7 +151,6 @@ def createPlot(inTree):
     plt.show()
 
 def classify(inputTree,featLabels,testVec):
-    "" "Utilice la función de clasificación del árbol de decisiones" ""
     firstStr = list(inputTree.keys())[0]
     secondDict = inputTree[firstStr]
     featIndex = featLabels.index(firstStr)
@@ -179,7 +162,6 @@ def classify(inputTree,featLabels,testVec):
                 classLabel = secondDict[key]
     return classLabel
 def lenses_test():
-    "" "Utilice el árbol de decisiones para predecir el tipo de lentes de contacto" ""
     fr = open('tennis.txt')
     lenses = [inst.strip().split(',') for inst in fr.readlines()]
     lensesLabel = ['Outlook', 'Temperature', 'Humidity', 'Windy', 'PlayTennis']
